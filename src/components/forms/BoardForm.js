@@ -49,7 +49,7 @@ class BoardForm extends Component {
     } else {
       BoardData.updateBoard(this.state)
         .then(() => {
-          this.props.onUpdate(this.state.firebaseKey);
+          this.props.onUpdate(this.props.board.firebaseKey);
         });
     }
   }
