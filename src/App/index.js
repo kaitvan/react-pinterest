@@ -1,9 +1,14 @@
 import React from 'react';
 import firebase from 'firebase/app';
+import { BrowserRouter as Router } from 'react-router-dom';
 import fbConnection from '../helpers/data/connection';
 
 import MyNavbar from '../components/myNavbar';
 import Routes from '../helpers/Routes';
+// import { patchFBBoardkeys, patchFBPinkeys } from '../helpers/data/patchFBkeys';
+
+// patchFBBoardkeys();
+// patchFBPinkeys();
 
 fbConnection();
 
@@ -31,8 +36,10 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <MyNavbar authed={authed} />
-        <Routes authed={authed} />
+        <Router>
+          <MyNavbar authed={authed} />
+          <Routes authed={authed} />
+        </Router>
       </div>
     );
   }
