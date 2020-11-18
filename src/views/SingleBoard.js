@@ -3,6 +3,7 @@ import pinsData from '../helpers/data/pinsData';
 import boardsData from '../helpers/data/boardsData';
 import PinCard from '../components/card/pinsCard';
 import BoardForm from '../components/forms/BoardForm';
+import AppModal from '../components/appModal';
 
 class SingleBoard extends Component {
   state = {
@@ -18,14 +19,12 @@ class SingleBoard extends Component {
       });
     });
 
-    this.findMatchingPins(boardFirebaseKey)?.then((resp) => (
-      this.setState({ pins: resp })
-    ));
-  }
+    this.findMatchingPins(boardFirebaseKey).then((pinArray) => (
+      this.setState({ pins: pinArray })
+    )).catch((error) => console.warn(error));
 
-  // Make a call to the API that returns the pins associated with this board.
-  // Put the array of pins in state. (convert this to a class-based component)
-  // Render the pins on the DOM.
+    console.warn('state', this.state);
+  }
 
   findMatchingPins = (boardFirebaseKey) => {
     pinsData.getBoardPins(boardFirebaseKey).then((response) => {
@@ -47,7 +46,9 @@ class SingleBoard extends Component {
 
     return (
       <div>
-        <BoardForm board={board} onUpdate={this.getBoardInfo}/>
+        <AppModal title={'Update Board'} buttonLabel={'Update Board'}>
+        { Object.keys(board).length && <BoardForm board={board} onUpdate={this.getBoardInfo} />}
+        </AppModal>
         <h1>{board.name}</h1>
         {renderPins()}
       </div>

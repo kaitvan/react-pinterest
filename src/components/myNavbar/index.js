@@ -13,6 +13,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from 'reactstrap';
+import SearchInput from '../searchInput';
 
 export default function MyNavbar(props) {
   const logMeOut = (e) => {
@@ -38,6 +39,7 @@ export default function MyNavbar(props) {
               <Link className='nav-link' to='/pins'>Pins</Link>
             </NavItem>
           </Nav>
+          <SearchInput />
           {
             user && <>
             <img className='userInfo' src={user?.photoURL} alt={user?.displayName} />
@@ -55,6 +57,8 @@ export default function MyNavbar(props) {
           }
         </Collapse>
       </Navbar>
+          {props.children}
+      <footer>This is the footer.</footer>
     </div>
   );
 }
