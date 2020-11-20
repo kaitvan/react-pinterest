@@ -23,7 +23,7 @@ class SearchResults extends Component {
 
     if (searchType === 'boards') {
       BoardsData.getAllUserBoards(currentUser).then((boardsArray) => {
-        const boardResults = boardsArray.filter((board) => board.name.toLowerCase().includes(searchTerm) || board.description.toLowerCase().includes(searchTerm));
+        const boardResults = boardsArray.filter((board) => board.name.toLowerCase().includes(searchTerm) || board.description.toLowerCase()).includes(searchTerm);
         this.setState({
           searchType,
           searchTerm,
