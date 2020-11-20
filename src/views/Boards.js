@@ -49,7 +49,7 @@ class Boards extends Component {
             <BoardForm />
           </AppModal>
           <h1>Boards</h1>
-          <div className='BoardContainer d-flex flex-wrap justify-content-center'>
+          <div className='card-container'>
           {showBoards()}
           </div>
           </>

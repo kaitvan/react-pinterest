@@ -23,7 +23,7 @@ export default function Routes({ user }) {
         <Route exact path='/pin-details' component={() => <PinDetails user={user} />} />
         <Route exact path='/board-form' component={() => <BoardForm user={user} />} />
         <Route exact path='/pin-form' component={() => <PinForm user={user} />} />
-        <Route exact path='/search/:term/:type' component={(props) => <SearchResults {...props} />} />
+        <Route exact path='/search/:term/:type' component={(props) => <SearchResults {...props} user={user}/>} />
         <Route component={NotFound} />
       </Switch>
   );

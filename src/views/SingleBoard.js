@@ -19,22 +19,18 @@ class SingleBoard extends Component {
       });
     });
 
-    this.findMatchingPins(boardFirebaseKey).then((pinArray) => (
-      this.setState({ pins: pinArray })
-    )).catch((error) => console.warn(error));
-
-    console.warn('state', this.state);
+    this.findMatchingPins(boardFirebaseKey).then((pinArray) => {
+      this.setState({ pins: pinArray });
+    });
   }
 
-  findMatchingPins = (boardFirebaseKey) => {
-    pinsData.getBoardPins(boardFirebaseKey).then((response) => {
-      const pinArray = [];
-      response.forEach((item) => {
-        pinArray.push(pinsData.getPin(item.pinId));
-      });
-      return Promise.all([...pinArray]);
+  findMatchingPins = (boardFirebaseKey) => pinsData.getBoardPins(boardFirebaseKey).then((response) => {
+    const pinArray = [];
+    response.forEach((item) => {
+      pinArray.push(pinsData.getPin(item.pinId));
     });
-  };
+    return Promise.all([...pinArray]);
+  });
 
   render() {
     const { pins, board } = this.state;
