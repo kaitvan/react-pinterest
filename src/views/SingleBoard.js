@@ -6,6 +6,7 @@ import BoardForm from '../components/forms/BoardForm';
 import AppModal from '../components/appModal';
 import PinForm from '../components/forms/PinForm';
 import Loader from '../components/loader';
+import PinsBoardsData from '../helpers/data/pinsBoardsData';
 
 class SingleBoard extends Component {
   state = {
@@ -45,11 +46,20 @@ class SingleBoard extends Component {
     clearInterval(this.timer);
   }
 
+  deletePin = (e) => {
+    pinsData.deletePin(e.target.id).then(() => {
+      PinsBoardsData.deletePinFromBoard(e.target.id).then(() => {
+        const updatedArray = this.state.pins.filter((pin) => pin.firebaseKey !== e.target.id);
+        this.setState({ pins: updatedArray });
+      });
+    });
+  }
+
   render() {
     const { pins, board, loading } = this.state;
     const renderPins = () => (
       pins.map((pin) => (
-        <PinCard key={pin.firebaseKey} pin={pin} />
+        <PinCard key={pin.firebaseKey} pin={pin} onDelete={this.deletePin}/>
       ))
     );
 

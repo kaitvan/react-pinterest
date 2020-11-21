@@ -9,8 +9,8 @@ const addPinToBoard = (pinToBoardObject) => new Promise((resolve, reject) => {
 });
 
 const deletePinFromBoard = (pinFirebaseKey) => (
-  axios.get(`${baseUrl}/pins-boards.json?orderBy="pidId"&equalTo=${pinFirebaseKey}`).then((response) => {
-    axios.delete(`${baseUrl}/pins-boards/${response.data.name}.json`);
+  axios.get(`${baseUrl}/pins-boards.json?orderBy="pinId"&equalTo="${pinFirebaseKey}"`).then((response) => {
+    axios.delete(`${baseUrl}/pins-boards/${Object.keys(response.data)[0]}.json`);
   })
 );
 

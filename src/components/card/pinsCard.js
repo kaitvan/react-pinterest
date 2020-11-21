@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
-import PinsData from '../../helpers/data/pinsData';
-import PinsBoardsData from '../../helpers/data/pinsBoardsData';
 
 class PinCard extends Component {
-  deletePin = (e) => {
-    PinsData.deletePin(e.target.id);
-    PinsBoardsData.deletePinFromBoard(e.target.id);
-  }
-
   render() {
-    const { pin } = this.props;
+    const { pin, onDelete } = this.props;
 
     return (
       <div className="card m-2" id={pin.firebaseKey} style={ { width: '300px' } } >
@@ -18,7 +11,7 @@ class PinCard extends Component {
         <div className="card-body">
           <h5 className="card-title">{pin.name}</h5>
           <p className="card-text">{pin.description}</p>
-          <Button id={pin.firebaseKey} color="danger" onClick={this.deletePin}>Delete Pin</Button>
+          <Button id={pin.firebaseKey} color="danger" onClick={onDelete}>Delete Pin</Button>
         </div>
       </div>
     );
