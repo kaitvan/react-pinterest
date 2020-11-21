@@ -4,6 +4,7 @@ import boardsData from '../helpers/data/boardsData';
 import PinCard from '../components/card/pinsCard';
 import BoardForm from '../components/forms/BoardForm';
 import AppModal from '../components/appModal';
+import PinForm from '../components/forms/PinForm';
 
 class SingleBoard extends Component {
   state = {
@@ -25,6 +26,7 @@ class SingleBoard extends Component {
   }
 
   findMatchingPins = (boardFirebaseKey) => pinsData.getBoardPins(boardFirebaseKey).then((response) => {
+    console.warn('board firebaseKey', boardFirebaseKey, 'getBoardPins response', response);
     const pinArray = [];
     response.forEach((item) => {
       pinArray.push(pinsData.getPin(item.pinId));
@@ -43,10 +45,13 @@ class SingleBoard extends Component {
     return (
       <div>
         <AppModal title={'Update Board'} buttonLabel={'Update Board'}>
-        { Object.keys(board).length && <BoardForm board={board} onUpdate={this.getBoardInfo} />}
+        { Object.keys(board).length && <BoardForm board={board} onUpdate={this.findMatchingPins} />}
+        </AppModal>
+        <AppModal title={'Add Pin'} buttonLabel={'Add Pin'}>
+        {<PinForm board={board} onUpdate={this.findMatchingPins}/>}
         </AppModal>
         <h1>{board.name}</h1>
-        {renderPins()}
+        <div className='card-container'>{renderPins()}</div>
       </div>
     );
   }
