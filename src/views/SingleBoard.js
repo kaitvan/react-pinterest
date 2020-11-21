@@ -5,11 +5,13 @@ import PinCard from '../components/card/pinsCard';
 import BoardForm from '../components/forms/BoardForm';
 import AppModal from '../components/appModal';
 import PinForm from '../components/forms/PinForm';
+import Loader from '../components/loader';
 
 class SingleBoard extends Component {
   state = {
     board: {},
     pins: [],
+    loading: true,
   }
 
   componentDidMount() {
@@ -28,11 +30,23 @@ class SingleBoard extends Component {
     response.forEach((item) => {
       pinArray.push(pinsData.getPin(item.pinId));
     });
-    Promise.all([...pinArray]).then((array) => this.setState({ pins: array }));
+    Promise.all([...pinArray]).then((array) => {
+      this.setState({ pins: array }, this.setLoading);
+    });
   });
 
+  setLoading = () => {
+    this.timer = setInterval(() => {
+      this.setState({ loading: false });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
   render() {
-    const { pins, board } = this.state;
+    const { pins, board, loading } = this.state;
     const renderPins = () => (
       pins.map((pin) => (
         <PinCard key={pin.firebaseKey} pin={pin} />
@@ -41,6 +55,10 @@ class SingleBoard extends Component {
 
     return (
       <div>
+        { loading ? (
+          <Loader />
+        ) : (
+          <>
           <AppModal title={'Update Board'} buttonLabel={'Update Board'}>
           { Object.keys(board).length && <BoardForm board={board} onUpdate={this.findMatchingPins} />}
           </AppModal>
@@ -49,6 +67,8 @@ class SingleBoard extends Component {
           </AppModal>
           <h1>{board.name}</h1>
           <div className='card-container'>{renderPins()}</div>
+          </>
+        )}
       </div>
     );
   }
