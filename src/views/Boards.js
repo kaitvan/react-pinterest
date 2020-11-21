@@ -46,7 +46,7 @@ class Boards extends Component {
         ) : (
           <>
           <AppModal title={'Create Board'} buttonLabel={'Create Board'}>
-            <BoardForm />
+            <BoardForm onUpdate={this.getBoards}/>
           </AppModal>
           <h1>Boards</h1>
           <div className='card-container'>

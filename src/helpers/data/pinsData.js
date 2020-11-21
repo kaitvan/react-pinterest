@@ -26,9 +26,21 @@ const getAllPublicPins = () => new Promise((resolve, reject) => {
   }).catch((error) => reject(error));
 });
 
+const createPin = (object) => new Promise((resolve, reject) => {
+  axios.post(`${baseUrl}/pins.json`, object).then((response) => {
+    axios.patch(`${baseUrl}/pins/${response.data.name}.json`, { firebaseKey: response.data.name }).then(resolve);
+  }).catch((error) => reject(error));
+});
+
+const updatePin = (object) => new Promise((resolve, reject) => {
+  axios.patch(`${baseUrl}/pins/${object.firebaseKey}.json`, object).then(resolve).catch((error) => reject(error));
+});
+
 export default {
   getBoardPins,
   getPin,
   getAllUserPins,
   getAllPublicPins,
+  createPin,
+  updatePin,
 };
