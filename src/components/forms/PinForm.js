@@ -53,9 +53,7 @@ class PinForm extends Component {
           };
           pinsBoardsData.addPinToBoard(pinToBoardObject);
         }).then(() => {
-          console.warn('board firebaseKey', this.props.board.firebaseKey);
           this.props.onUpdate(this.props.board.firebaseKey);
-          console.warn('starting onUpdate');
         });
     } else {
       PinData.updatePin(this.state)
