@@ -59,7 +59,7 @@ class SingleBoard extends Component {
     const { pins, board, loading } = this.state;
     const renderPins = () => (
       pins.map((pin) => (
-        <PinCard key={pin.firebaseKey} pin={pin} onDelete={this.deletePin}/>
+        <PinCard key={pin.firebaseKey} pin={pin} onDelete={this.deletePin} onUpdate={this.findMatchingPins} board={board} />
       ))
     );
 
