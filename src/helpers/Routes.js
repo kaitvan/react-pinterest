@@ -19,7 +19,7 @@ export default function Routes({ user }) {
         <PrivateRoute exact path='/boards' component={Boards} user={user} />
         <PrivateRoute exact path='/pins' component={Pins} user={user} />
         <PrivateRoute exact path='/boards/:id' component={SingleBoard} user={user} />
-        <Route exact path='/pin-details' component={() => <PinDetails user={user} />} />
+        <PrivateRoute exact path='/pin/:id' component={PinDetails} user={user} />
         <Route exact path='/search/:term/:type' component={(props) => <SearchResults {...props} user={user}/>} />
         <Route component={NotFound} />
       </Switch>

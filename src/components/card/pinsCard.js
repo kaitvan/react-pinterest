@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import AppModal from '../appModal';
 import PinForm from '../forms/PinForm';
 
@@ -13,6 +14,7 @@ class PinCard extends Component {
         <div className="card-body">
           <h5 className="card-title">{pin.name}</h5>
           <p className="card-text">{pin.description}</p>
+          <Link className="btn btn-primary" to={`/pin/${pin.firebaseKey}`}>View Pin Details</Link>
           <AppModal title={'Update Pin'} buttonLabel={'Update Pin'}>
           { Object.keys(pin).length && <PinForm pin={pin} onUpdate={onUpdate} board={this.props.board} />}
           </AppModal>
