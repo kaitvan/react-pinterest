@@ -3,6 +3,7 @@ import PinsData from '../helpers/data/pinsData';
 import getUid from '../helpers/data/authData';
 import PinCard from '../components/card/pinsCard';
 import Loader from '../components/loader';
+import PinsBoardsData from '../helpers/data/pinsBoardsData';
 
 class Pins extends Component {
   state = {
@@ -12,6 +13,15 @@ class Pins extends Component {
 
   componentDidMount() {
     this.getUserPins();
+  }
+
+  deletePin = (e) => {
+    PinsData.deletePin(e.target.id).then(() => {
+      PinsBoardsData.deletePinFromBoard(e.target.id).then(() => {
+        const updatedArray = this.state.pins.filter((pin) => pin.firebaseKey !== e.target.id);
+        this.setState({ pins: updatedArray });
+      });
+    });
   }
 
   getUserPins = () => {
@@ -34,7 +44,7 @@ class Pins extends Component {
   render() {
     const { pins, loading } = this.state;
     const showPins = () => (
-      pins.map((pin) => <PinCard key={pin.firebaseKey} pin={pin}/>)
+      pins.map((pin) => <PinCard key={pin.firebaseKey} pin={pin} onDelete={this.deletePin}/>)
     );
 
     return (
