@@ -20,7 +20,7 @@ class PinDetails extends Component {
     return (
       <div>
       <h1>{pin.name}</h1>
-      <img src={pin.imgUrl} alt={pin.description}/>
+      <img src={pin.imageUrl} alt={pin.description}/>
       <p>{pin.description}</p>
     </div>
     );
