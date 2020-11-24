@@ -24,9 +24,12 @@ const updateBoard = (object) => new Promise((resolve, reject) => {
   axios.patch(`${baseUrl}/boards/${object.firebaseKey}.json`, object).then(resolve).catch((error) => reject(error));
 });
 
+const deleteBoard = (firebaseKey) => axios.delete(`${baseUrl}/boards/${firebaseKey}.json`);
+
 export default {
   getAllUserBoards,
   getSingleBoard,
   createBoard,
   updateBoard,
+  deleteBoard,
 };
