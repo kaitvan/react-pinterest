@@ -63,16 +63,14 @@ class PinForm extends Component {
     }
   }
 
-  boards = [];
-
-  getBoards = () => new Promise((resolve, reject) => {
+  getBoards = () => {
     const currentUserId = getUser();
-    BoardsData.getAllUserBoards(currentUserId);
-  }).then(resolve).catch((error) => reject(error));
+    BoardsData.getAllUserBoards(currentUserId).then((response) => response);
+  }
 
   render() {
     const showBoardOptions = () => (
-      this.boards.map((board) => <option value={board.firebaseKey}>{board.name}</option>)
+      this.getBoards().map((board) => <option value={board.firebaseKey}>{board.name}</option>)
     );
 
     return (
