@@ -6,7 +6,7 @@ import getUser from '../../helpers/data/authData';
 import PinData from '../../helpers/data/pinsData';
 import pinsBoardsData from '../../helpers/data/pinsBoardsData';
 
-class PinForm extends Component {
+class SavePinForm extends Component {
   state = {
     firebaseKey: this.props.pin?.firebaseKey || '',
     name: this.props.pin?.name || '',
@@ -14,6 +14,7 @@ class PinForm extends Component {
     userId: this.props.pin?.userId || '',
     description: this.props.pin?.description || '',
     private: this.props.pin?.private || false,
+    boardId: this.props.boards[0].firebaseKey,
   }
 
   componentDidMount() {
@@ -46,25 +47,32 @@ class PinForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    if (this.state.firebaseKey === '') {
-      PinData.createPin(this.state)
-        .then((response) => {
-          const pinToBoardObject = {
-            boardId: this.props.board.firebaseKey,
-            pinId: response.data.firebaseKey,
-            userId: this.state.userId,
-          };
-          pinsBoardsData.addPinToBoard(pinToBoardObject).then(() => this.props.onUpdate(this.props.board.firebaseKey));
-        });
-    } else {
-      PinData.updatePin(this.state)
-        .then(() => {
-          this.props.board ? this.props.onUpdate(this.props.board.firebaseKey) : this.props.onUpdate();
-        });
-    }
+    const pinObject = {
+      firebaseKey: this.state.firebaseKey,
+      name: this.state.name,
+      imageUrl: this.state.imageUrl,
+      userId: this.state.userId,
+      description: this.state.description,
+      private: this.state.private,
+    };
+
+    PinData.createPin(pinObject)
+      .then((response) => {
+        const pinToBoardObject = {
+          boardId: this.state.boardId,
+          pinId: response.data.firebaseKey,
+          userId: this.state.userId,
+        };
+        pinsBoardsData.addPinToBoard(pinToBoardObject).then(() => this.props.onUpdate());
+      });
   }
 
   render() {
+    const { boards } = this.props;
+    const showBoardOptions = () => (
+      boards.map((board) => <option value={board.firebaseKey}>{board.name}</option>)
+    );
+
     return (
       <form onSubmit={this.handleSubmit}>
         <h1>Add Pin Form</h1>
@@ -103,6 +111,12 @@ class PinForm extends Component {
           accept='image/*'
           onChange={this.handleChange}
         />
+        <FormGroup>
+          <Label for="board">Select A Board</Label>
+          <Input type="select" name="boardId" id="board" onChange={this.handleChange}>
+            {showBoardOptions()}
+          </Input>
+        </FormGroup>
         <FormGroup check>
           <Label for="private" check>Private</Label>
           <Input type="checkbox" name="private" id="private" onChange={this.handleChange}/>
@@ -113,4 +127,4 @@ class PinForm extends Component {
   }
 }
 
-export default PinForm;
+export default SavePinForm;
