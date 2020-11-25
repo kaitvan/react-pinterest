@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import BoardCard from '../components/card/boardsCard';
 import PinCard from '../components/card/pinsCard';
+import BoardsData from '../helpers/data/boardsData';
+import PinsData from '../helpers/data/pinsData';
+import getUid from '../helpers/data/authData';
 
 class SearchResults extends Component {
   state = {
@@ -14,22 +17,27 @@ class SearchResults extends Component {
   }
 
   performSearch = () => {
-    const searchTerm = this.props.match.params.term;
+    const searchTerm = this.props.match.params.term.toLowerCase();
     const searchType = this.props.match.params.type;
+    const currentUser = getUid();
 
     if (searchType === 'boards') {
-      // Make an API call that gets the boards with the search term using .filter
-      this.setState({
-        searchType,
-        searchTerm,
-        // results
+      BoardsData.getAllUserBoards(currentUser).then((boardsArray) => {
+        const boardResults = boardsArray.filter((board) => board.name.toLowerCase().includes(searchTerm) || board.description.toLowerCase()).includes(searchTerm);
+        this.setState({
+          searchType,
+          searchTerm,
+          results: boardResults,
+        });
       });
     } else {
-      // Make an API call that gets the boards with the search term using .filter
-      this.setState({
-        searchTerm,
-        searchType,
-        // results
+      PinsData.getAllUserPins(currentUser).then((pinsArray) => {
+        const pinResults = pinsArray.filter((pin) => pin.name.toLowerCase().includes(searchTerm) || pin.description.toLowerCase().includes(searchTerm));
+        this.setState({
+          searchTerm,
+          searchType,
+          results: pinResults,
+        });
       });
     }
   }
@@ -51,7 +59,7 @@ class SearchResults extends Component {
     return (
       <div>
         <h1>Search Results</h1>
-        <div>
+        <div className='card-container'>
           {showResults()}
         </div>
       </div>

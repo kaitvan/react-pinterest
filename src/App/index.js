@@ -37,8 +37,8 @@ class App extends React.Component {
     return (
       <div className="App">
         <Router>
-          <MyNavbar authed={user}>
-            <Routes authed={user} />
+          <MyNavbar user={user}>
+            <Routes user={user} />
           </MyNavbar>
         </Router>
       </div>
