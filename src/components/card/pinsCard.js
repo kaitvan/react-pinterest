@@ -13,6 +13,9 @@ class PinCard extends Component {
         <img className="card-img-top" src={pin.imageUrl} alt={pin.description}></img>
         <div className="card-body">
           <h5 className="card-title">{pin.name}</h5>
+          <AppModal title={'Save Pin'} buttonLabel={'Save Pin'}>
+          { Object.keys(pin).length && <PinForm pin={pin} onUpdate={onUpdate} board={this.props.board} />}
+          </AppModal>
           <Link className="btn btn-primary" to={`/pin/${pin.firebaseKey}`}>View Pin Details</Link>
           <AppModal title={'Update Pin'} buttonLabel={'Update Pin'}>
           { Object.keys(pin).length && <PinForm pin={pin} onUpdate={onUpdate} board={this.props.board} />}

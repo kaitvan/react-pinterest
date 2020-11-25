@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/storage';
+import { FormGroup, Label, Input } from 'reactstrap';
 import getUser from '../../helpers/data/authData';
 import PinData from '../../helpers/data/pinsData';
 import pinsBoardsData from '../../helpers/data/pinsBoardsData';
+import BoardsData from '../../helpers/data/boardsData';
 
 class PinForm extends Component {
   state = {
@@ -61,7 +63,18 @@ class PinForm extends Component {
     }
   }
 
+  boards = [];
+
+  getBoards = () => new Promise((resolve, reject) => {
+    const currentUserId = getUser();
+    BoardsData.getAllUserBoards(currentUserId).then(resolve).catch((error) => reject(error));
+  });
+
   render() {
+    const showBoardOptions = () => (
+      this.boards.map((board) => <option value={board.firebaseKey}>{board.name}</option>)
+    );
+
     return (
       <form onSubmit={this.handleSubmit}>
         <h1>Add Pin Form</h1>
@@ -100,6 +113,13 @@ class PinForm extends Component {
           accept='image/*'
           onChange={this.handleChange}
         />
+        <FormGroup>
+          <Label for="board">Select A Board</Label>
+          <Input type="select" name="select" id="board">
+            {console.warn(this.getBoards())}
+            {showBoardOptions()}
+          </Input>
+        </FormGroup>
         <button>Submit</button>
       </form>
     );
