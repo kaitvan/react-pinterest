@@ -44,7 +44,7 @@ class Pins extends Component {
   render() {
     const { pins, loading } = this.state;
     const showPins = () => (
-      pins.map((pin) => <PinCard key={pin.firebaseKey} pin={pin} onDelete={this.deletePin}/>)
+      pins.map((pin) => <PinCard key={pin.firebaseKey} pin={pin} onUpdate={this.getUserPins} onDelete={this.deletePin}/>)
     );
 
     return (

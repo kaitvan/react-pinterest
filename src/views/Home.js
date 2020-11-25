@@ -4,20 +4,31 @@ import PinsData from '../helpers/data/pinsData';
 import PinCard from '../components/card/pinsCard';
 import Loader from '../components/loader';
 import PinsBoardsData from '../helpers/data/pinsBoardsData';
+import BoardsData from '../helpers/data/boardsData';
+import getUid from '../helpers/data/authData';
 
 class Home extends Component {
   state = {
     pins: [],
     loading: true,
+    boards: [],
   }
 
   componentDidMount() {
     this.getPublicPins();
+    this.getBoards();
   }
 
   getPublicPins = () => {
     PinsData.getAllPublicPins().then((pinsArray) => {
       this.setState({ pins: pinsArray }, this.setLoading);
+    });
+  }
+
+  getBoards = () => {
+    const currentUserId = getUid();
+    BoardsData.getAllUserBoards(currentUserId).then((response) => {
+      this.setState({ boards: response });
     });
   }
 
@@ -42,11 +53,11 @@ class Home extends Component {
 
   render() {
     const { user } = this.props;
-    const { pins, loading } = this.state;
+    const { pins, loading, boards } = this.state;
     const loadComponent = () => {
       let component = '';
       const showPublicPins = () => (
-        pins.map((pin) => <PinCard key={pin.firebaseKey} pin={pin} onDelete={this.deletePin} />)
+        pins.map((pin) => <PinCard key={pin.firebaseKey} home={true} onUpdate={this.getBoards} boards={boards} pin={pin} onDelete={this.deletePin} />)
       );
 
       if (user) {
