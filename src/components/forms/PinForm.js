@@ -67,8 +67,8 @@ class PinForm extends Component {
 
   getBoards = () => new Promise((resolve, reject) => {
     const currentUserId = getUser();
-    BoardsData.getAllUserBoards(currentUserId).then(resolve).catch((error) => reject(error));
-  });
+    BoardsData.getAllUserBoards(currentUserId);
+  }).then(resolve).catch((error) => reject(error));
 
   render() {
     const showBoardOptions = () => (
