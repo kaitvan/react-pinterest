@@ -58,7 +58,7 @@ export default function MyNavbar(props) {
         </Collapse>
       </Navbar>
           {props.children}
-      <footer>This is the footer.</footer>
+      <footer></footer>
     </div>
   );
 }
